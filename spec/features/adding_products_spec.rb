@@ -14,10 +14,11 @@ feature 'User adds a product' do
 		expect(product.quantity).to eq 4
 		expect(product.price).to eq 4.40
 		expect(product.description).to eq "A sack, full of potatoes."
+		# expect(product.total_stock_value).to eq 17.60
 	end
 
 	def add_product(product_title, quantity, price, description)
-		within('#new_product') do
+		within('#new-product') do
 			fill_in 'product_title', :with => product_title
 			fill_in 'quantity', :with => quantity
 			fill_in 'price', :with => price
