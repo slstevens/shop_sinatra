@@ -9,5 +9,5 @@ class Product
 	property :description, 			String
 	property :total_stock_value,	Float
 
-	# has n, :tags, :through => Resource
+	has n, :tags, :through => Resource
 end

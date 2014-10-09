@@ -4,6 +4,7 @@
 		Quantity: <input type="number" name="quantity">
 		Price per unit: <input type="number" step="any" name="price">
 		Description: <input type="text" name="description">
+		Tags: <input type="text" name="tags">
 		<input type="submit" value="Add product">
 	</form>
 </div>
@@ -14,6 +15,7 @@
 			<th> Quantity </th>
 			<th> Retail Price </th>
 			<th> Description </th>
+			<th> Tags </th>
 			<th> Total Stock Value </th>
 		</tr>
 	<% @products.each do |product|%>
@@ -22,6 +24,7 @@
 			<td><%= product.quantity %></td>
 			<td><%= product.price %></td>
 			<td><%= product.description %></td>
+			<td><%= product.tags %></td>
 			<td><%= product.total_stock_value%></td>
 		</tr>
 	<% end %>
