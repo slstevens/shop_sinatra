@@ -2,15 +2,15 @@ require 'sinatra'
 require 'data_mapper'
 
 require_relative 'model/product'
+require_relative 'model/tag'
+require_relative 'model/user'
+require_relative 'helpers/sessions_helper'
+require_relative 'data_mapper_setup'
 
-env = ENV["RACK_ENV"] || "development"
+include SessionsHelper
 
-DataMapper.setup(:default, "postgres://localhost/shop_manager_#{env}")
-
-require './app/model/product'
-require './app/model/tag'
-DataMapper.finalize
-DataMapper.auto_upgrade!
+	enable :sessions
+	set :session_secret, 'super secret'
 
 	get '/' do
 		@products = Product.all
@@ -32,4 +32,24 @@ DataMapper.auto_upgrade!
 					   :tags => tags,
 					   :total_stock_value => (quantity.to_i * price.to_f))
 		redirect to('/')
+	end
+
+	get '/tags/:text' do
+		tag = Tag.first(:text => params[:text])
+		@products = tag ? tag.products : []
+		erb :index
+	end
+
+
+	get '/users/new' do
+		@user = User.new
+		erb :"users/new"
+	end
+
+	post '/users' do
+		@user = User.create(:email => params[:email],
+              				:password => params[:password],
+              				:password_confirmation => params[:password_confirmation])
+		session[:user_id] = @user.id
+  		redirect to('/')
 	end
