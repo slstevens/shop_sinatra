@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'data_mapper'
+require 'rack-flash'
 
 require_relative 'model/product'
 require_relative 'model/tag'
@@ -11,6 +12,8 @@ include SessionsHelper
 
 	enable :sessions
 	set :session_secret, 'super secret'
+	use Rack::Flash, :sweep => true
+
 
 	get '/' do
 		@products = Product.all
@@ -50,6 +53,27 @@ include SessionsHelper
 		@user = User.create(:email => params[:email],
               				:password => params[:password],
               				:password_confirmation => params[:password_confirmation])
-		session[:user_id] = @user.id
-  		redirect to('/')
+  		if @user.save
+			session[:user_id] = @user.id
+			redirect to('/')
+		else
+			flash.now[:errors] = @user.errors.full_messages
+			erb :"users/new"
+		end
 	end
+
+  	get '/sessions/new' do
+   		 erb :"sessions/new"
+  	end
+
+  	post '/sessions' do
+   		email, password = params[:email], params[:password]
+    	user = User.authenticate(email, password)
+   		if user
+      		session[:user_id] = user.id
+      		redirect to('/')
+    	else
+      		flash[:errors] = ["The email or password is incorrect"]
+    	    erb :"sessions/new"
+    	end
+    end
