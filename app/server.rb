@@ -25,6 +25,6 @@ DataMapper.auto_upgrade!
 					   :quantity => quantity,
 					   :price => price,
 					   :description => description,
-					   :total_stock_value => (quantity.to_i * price.to_i))
+					   :total_stock_value => (quantity.to_i * price.to_f))
 		redirect to('/')
 	end
