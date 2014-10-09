@@ -1,0 +1,20 @@
+<table>
+	<% @products.each do |product|%>
+		<tr>
+			<td><%= product.product_title %></td>
+			<td><%= product.quantity %></td>
+			<td><%= product.price %></td>
+			<td><%= product.description %></td>
+		</tr>
+	<% end %>
+</table>
+
+<div id="new-product">
+	<form action="/products" method="post">
+		Product Title: <input type="text" name="product_title">
+		Quantity: <input type="number" name="quantity">
+		Price: <input type="number" step="any" name="price">
+		Description: <input type="text" name="description">
+		<input type="submit" value="Add product">
+	</form>
+</div>
