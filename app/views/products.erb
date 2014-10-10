@@ -1,0 +1,18 @@
+
+<% @products.each do |product| %>
+<h1><%= product.product_title %></h1>
+<%end%>
+
+<ul>
+	<% @products.each do |product|%>
+			<li>Quantity in stock:<%= product.quantity %></li>
+			<li>RRP (per unit): <%= product.price %></li>
+			<li>Product Description:<%= product.description %></li>
+			<li>Tags: <% product.tags.each do |tag| %>
+			<a href="<%="/tags/"+tag.text%>"><%= tag.text %></a>
+			<%end%>
+			</li>
+			<li>Total Stock Value:<%= product.total_stock_value%></li>
+	<% end %>
+</ul>
+

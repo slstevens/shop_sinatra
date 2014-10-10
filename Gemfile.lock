@@ -106,6 +106,8 @@ DEPENDENCIES
   capybara
   data_mapper
   database_cleaner
+  dm-core
+  dm-migrations
   dm-postgres-adapter
   rack-flash3
   rspec

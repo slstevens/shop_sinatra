@@ -1,13 +1,14 @@
 <h1>Welcome to the Shop Inventory Management System</h1>
 
 <div id="new-product">
-	<form action="/products" method="post">
+	<form action="/products" method="post" enctype="multipart/form-data">
 		Product Title: <input type="text" name="product_title">
 		Quantity: <input type="number" name="quantity">
 		Price per unit: <input type="number" step="any" name="price">
 		Description: <input type="text" name="description">
 		Tags: <input type="text" name="tags">
 		<input type="submit" value="Add product">
+
 	</form>
 </div>
 
@@ -22,11 +23,14 @@
 		</tr>
 	<% @products.each do |product|%>
 		<tr>
-			<td><%= product.product_title %></td>
+			<td><a href="/products/<%= product.product_title %>"><%= product.product_title %></a></td>
 			<td><%= product.quantity %></td>
 			<td><%= product.price %></td>
 			<td><%= product.description %></td>
-			<td><%= product.tags%></td>
+			<td><% product.tags.each do |tag| %>
+			<a href="<%="/tags/"+tag.text%>"><%= tag.text %></a>
+			<%end%>
+			</td>
 			<td><%= product.total_stock_value%></td>
 		</tr>
 	<% end %>

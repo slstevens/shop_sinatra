@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'data_mapper'
 require 'rack-flash'
+require 'dm-core'
+
 
 require_relative 'model/product'
 require_relative 'model/tag'
@@ -25,7 +27,7 @@ include SessionsHelper
 		quantity = params["quantity"]
 		price = params["price"]
 		description = params["description"]
-		tags = params["tags"].split(" ").map do |tag|
+		tags = params["tags"].split(", ").map do |tag|
 			Tag.first_or_create(:text => tag)
 		end
 		Product.create(:product_title => product_title,
@@ -33,7 +35,8 @@ include SessionsHelper
 					   :price => price,
 					   :description => description,
 					   :tags => tags,
-					   :total_stock_value => (quantity.to_i * price.to_f))
+					   :total_stock_value => (quantity.to_i * price.to_f),
+					   :image => image)
 		redirect to('/')
 	end
 
@@ -43,6 +46,11 @@ include SessionsHelper
 		erb :index
 	end
 
+	get '/products/:product_title' do
+		product = Product.first(:product_title => params[:product_title]) #this line works but i don't know what it does
+		@products = Product.all
+		erb :products
+	end
 
 	get '/users/new' do
 		@user = User.new
@@ -76,4 +84,10 @@ include SessionsHelper
       		flash[:errors] = ["The email or password is incorrect"]
     	    erb :"sessions/new"
     	end
+    end
+
+    delete '/sessions' do
+	    flash[:notice] = "Good bye!"
+	    session[:user_id] = nil
+	    redirect to('/')
     end
